@@ -10,9 +10,11 @@ source_c = [
   'src/main.c',
   'src/render.c',
   'src/world.c',
+  'src/events.c',
   'include/character.h',
   'include/render.h',
   'include/world.h',
+  'include/events.h',
 ]
 
 inc = include_directories('include')
@@ -22,4 +24,5 @@ TheOnlyRuleIsBattle = executable('torib',
   dependencies : [ ncurses_dep ],
   install : true,
   include_directories: inc,
+  link_args: [ '-ggdb' ],
 )
