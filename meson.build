@@ -6,9 +6,13 @@ cc = meson.get_compiler('c')
 ncurses_dep = dependency('ncurses')
 
 source_c = [
+  'src/character.c',
   'src/main.c',
+  'src/render.c',
   'src/world.c',
-  'include/world.h'
+  'include/character.h',
+  'include/render.h',
+  'include/world.h',
 ]
 
 inc = include_directories('include')
