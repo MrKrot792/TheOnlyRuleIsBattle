@@ -9,8 +9,6 @@ typedef struct {
     uint32_t height;
 } World;
 
-World GlobalWorld = {0};
-
 void World_init(uint32_t width, uint32_t height);
 void World_deinit();
 
