@@ -7,12 +7,12 @@
 #include "character.h"
 #include "app.h"
 
-void RenderLocal_drawTextureAt(uint32_t x, uint32_t y, Texture texture) {
+static void Render_drawTextureAt(uint32_t x, uint32_t y, Texture texture) {
     mvaddch(y, x*2,   texture[0]);
     mvaddch(y, x*2+1, texture[1]);
 }
 
-void GCC_PRINTFLIKE(3, 4) RenderLocal_drawTextAt(uint32_t x, uint32_t y, const char* text, ...) {
+static void GCC_PRINTFLIKE(3, 4) Render_drawTextAt(uint32_t x, uint32_t y, const char* text, ...) {
     va_list ap;
     va_start(ap, text);
     mvinch(y, x);
@@ -20,12 +20,12 @@ void GCC_PRINTFLIKE(3, 4) RenderLocal_drawTextAt(uint32_t x, uint32_t y, const c
     va_end(ap);
 }
 
-void RenderLocal_drawCharacter() {
-    RenderLocal_drawTextureAt(*Character_getX(), *Character_getY(), TEXTURE_CHARACTER);
+static void Render_drawCharacter() {
+    Render_drawTextureAt(*Character_getX(), *Character_getY(), TEXTURE_CHARACTER);
 }
 
-void RenderLocal_drawUI() {
-    RenderLocal_drawTextAt(0, LINES-1, 
+static void Render_drawUI() {
+    Render_drawTextAt(0, LINES-1, 
             "HP: %d; POS: %dx, %dy; FPS: %f;", 
 
             *Character_getHp(), 
@@ -35,6 +35,6 @@ void RenderLocal_drawUI() {
 }
 
 void Render_drawAll() {
-    RenderLocal_drawCharacter();
-    RenderLocal_drawUI();
+    Render_drawCharacter();
+    Render_drawUI();
 }

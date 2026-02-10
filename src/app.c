@@ -5,34 +5,34 @@
 #include "events.h"
 #include "render.h"
 
-bool running = true;
-int error = APP_OK;
+static bool running = true;
+static int error = APP_OK;
 
-float fps = 0.f;
+static float fps = 0.f;
 
-void ncursesInit() {
+static void App_ncursesInit() {
     initscr();
     noecho();
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
 }
 
-void ncursesDeinit() { endwin(); }
+static void App_ncursesDeinit() { endwin(); }
+
+static double App_now() {
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return ts.tv_sec + ts.tv_nsec / 1e9;
+}
 
 void App_init() {
     World_init(WORLD_WIDTH, WORLD_HEIGHT);
-    ncursesInit();
+    App_ncursesInit();
 }
 
 void App_deinit() {
     World_deinit();
-    ncursesDeinit();
-}
-
-double App_now() {
-    struct timespec ts;
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-    return ts.tv_sec + ts.tv_nsec / 1e9;
+    App_ncursesDeinit();
 }
 
 int App_loop() {

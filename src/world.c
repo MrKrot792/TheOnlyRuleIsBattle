@@ -2,7 +2,7 @@
 
 #include "world.h"
 
-World GlobalWorld = {0};
+static World GlobalWorld = {0};
 
 void World_init(uint32_t width, uint32_t height) { 
     GlobalWorld.data = malloc(sizeof(Block) * width * height);
