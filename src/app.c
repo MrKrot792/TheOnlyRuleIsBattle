@@ -3,6 +3,9 @@
 #include "events.h"
 #include "render.h"
 
+bool running = true;
+int error = APP_OK;
+
 void ncursesInit() {
     initscr();
     noecho();
@@ -23,7 +26,6 @@ void App_deinit() {
 }
 
 int App_loop() {
-    bool running = true;
     while (running) {
         Events_pollEvents();
 
@@ -32,5 +34,10 @@ int App_loop() {
         refresh();
     }
 
-    return APP_OK;
+    return error;
+}
+
+void App_break(int code) {
+    error = code;
+    running = false;
 }
