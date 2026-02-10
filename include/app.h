@@ -10,7 +10,9 @@
 void App_init();
 void App_deinit();
 
+// Helpers
 void App_break(int code);
+float App_getFps();
 
 // Returns an error, if there's any, if there weren't any erros, returns 0 (APP_OK)
 int App_loop();

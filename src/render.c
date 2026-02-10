@@ -5,6 +5,7 @@
 #include "render.h"
 #include "world.h"
 #include "character.h"
+#include "app.h"
 
 void RenderLocal_drawTextureAt(uint32_t x, uint32_t y, Texture texture) {
     mvaddch(y, x*2,   texture[0]);
@@ -25,11 +26,12 @@ void RenderLocal_drawCharacter() {
 
 void RenderLocal_drawUI() {
     RenderLocal_drawTextAt(0, LINES-1, 
-            "HP: %d; POS: %dx, %dy;", 
+            "HP: %d; POS: %dx, %dy; FPS: %f;", 
 
             *Character_getHp(), 
             *Character_getX(), 
-            *Character_getY());
+            *Character_getY(),
+            App_getFps());
 }
 
 void Render_drawAll() {

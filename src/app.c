@@ -1,3 +1,5 @@
+#include <time.h>
+
 #include "app.h"
 #include "world.h"
 #include "events.h"
@@ -5,6 +7,8 @@
 
 bool running = true;
 int error = APP_OK;
+
+float fps = 0.f;
 
 void ncursesInit() {
     initscr();
@@ -25,13 +29,27 @@ void App_deinit() {
     ncursesDeinit();
 }
 
+double App_now() {
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return ts.tv_sec + ts.tv_nsec / 1e9;
+}
+
 int App_loop() {
+    double last = App_now();
+
     while (running) {
+        // FPS stuff
+        double current = App_now();
+        double delta = current - last;
+        fps = 1.0 / delta;
+
         Events_pollEvents();
 
         erase();
             Render_drawAll();
         refresh();
+        last = current;
     }
 
     return error;
@@ -40,4 +58,8 @@ int App_loop() {
 void App_break(int code) {
     error = code;
     running = false;
+}
+
+float App_getFps() {
+    return fps;
 }
