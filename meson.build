@@ -11,6 +11,7 @@ source_c = [
   'src/render.c',
   'src/world.c',
   'src/events.c',
+  'src/app.c',
 ]
 
 inc = include_directories('include')

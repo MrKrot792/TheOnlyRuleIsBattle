@@ -1,37 +1,12 @@
 #include <ncurses.h>
-#include "world.h"
-#include "render.h"
-#include "events.h"
-
-void ncursesInit();
-void ncursesDeinit();
+#include <stdio.h>
+#include "app.h"
 
 int main() {
-    // Init
-    World_init(800, 800);
-    ncursesInit();
-
-    // Main loop
-    bool running = true;
-    while (running) {
-        Events_pollEvents();
-
-        erase();
-            Render_drawAll();
-        refresh();
-    }
-
-    // Freeing everything
-    ncursesDeinit();
-    World_deinit();
-    return 0;
+    App_init();
+    // Looping until an error or `running = false`
+    int error = App_loop();
+    if (error != APP_OK) fprintf(stderr, "ERROR: The app returned an error: %d\n", error);
+    App_deinit();
+    return error;
 }
-
-void ncursesInit() {
-    initscr();
-    noecho();
-    keypad(stdscr, TRUE);
-    nodelay(stdscr, TRUE);
-}
-
-void ncursesDeinit() { endwin(); }
