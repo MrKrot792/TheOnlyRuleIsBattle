@@ -3,6 +3,7 @@
 #include <stdarg.h>
 
 #include "render.h"
+#include "fps.h"
 #include "world.h"
 #include "character.h"
 #include "app.h"
@@ -29,13 +30,15 @@ static void Render_drawCharacter() {
 }
 
 static void Render_drawUI() {
+    FpsInfo fps = App_getFps();
     Render_drawTextAt(Vec2_create(0, LINES-1),
-            "HP: %d; POS: %Gx, %Gy; FPS: %f;", 
+            "HP: %d; POS: %Gx, %Gy; FPS: %d; Delta: %f;", 
 
             *Character_getHp(), 
             *Character_getX(), 
             *Character_getY(),
-            App_getFps());
+            fps.fps,
+            fps.delta);
 }
 
 void Render_drawAll() {
