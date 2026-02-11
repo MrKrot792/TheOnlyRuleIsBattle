@@ -12,7 +12,6 @@ source_c = [
   'src/world.c',
   'src/events.c',
   'src/app.c',
-  'src/vec2.c',
   'src/fps.c',
   'src/log.c',
   'src/camera.c'

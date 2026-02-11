@@ -1,27 +1,34 @@
 #include "events.h"
 #include "character.h"
 #include "app.h"
+#include "vec2.h"
 
 #include <ncurses.h>
 
 void Events_pollEvents() {
     int ch = getch();
 
+    Vec2 movement_vector = Vec2_zero();
+
     switch (ch) {
         case 'a':
-            Character_setX(Character_getX() - 1);
+            movement_vector.x = -1;
             break;
         case 'd':
-            Character_setX(Character_getX() + 1);
+            movement_vector.x = 1;
             break;
         case 'w':
-            Character_setY(Character_getY() - 1);
+            movement_vector.y = -1;
             break;
         case 's':
-            Character_setY(Character_getY() + 1);
+            movement_vector.y = 1;
             break;
         case 'q':
             App_break(APP_OK);
             break;
+    }
+
+    if (!Vec2_isZero(movement_vector)) {
+        Character_setPosition(Vec2_add(Character_getPosition(), movement_vector));
     }
 }

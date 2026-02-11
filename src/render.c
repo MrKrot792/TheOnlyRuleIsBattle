@@ -37,14 +37,13 @@ static void Render_drawCharacter() {
 
 static void Render_drawUI() {
     FpsInfo fps = App_getFps();
+    Vec2 position = Character_getPosition();
     Render_drawTextAt(Vec2_create(0, RENDER_REAL_HEIGHT - 1),
             "HP: %d; POS: %Gx, %Gy; FPS: %d; Delta: %f;", 
 
             Character_getHp(), 
-            Character_getX(), 
-            Character_getY(),
-            fps.fps,
-            fps.delta);
+            position.x, position.y,
+            fps.fps, fps.delta);
 }
 
 static void Render_drawWorld() {

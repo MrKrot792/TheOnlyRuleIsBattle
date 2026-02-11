@@ -11,12 +11,6 @@ typedef struct {
     uint32_t hp;
 } Character;
 
-void Character_setX(float x);
-void Character_setY(float y);
-
-float Character_getX();
-float Character_getY();
-
 Vec2 Character_getPosition();
 void Character_setPosition(Vec2 position);
 
