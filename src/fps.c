@@ -1,7 +1,6 @@
 #include "fps.h"
 #include <bits/time.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <time.h>
 
 static struct timespec frame_start;
