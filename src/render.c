@@ -26,7 +26,7 @@ static void Render_drawCharacter() {
 
 static void Render_drawUI() {
     Render_drawTextAt(0, LINES-1, 
-            "HP: %d; POS: %dx, %dy; FPS: %f;", 
+            "HP: %d; POS: %Gx, %Gy; FPS: %f;", 
 
             *Character_getHp(), 
             *Character_getX(), 

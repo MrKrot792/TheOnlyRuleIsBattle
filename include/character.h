@@ -1,15 +1,16 @@
 #pragma once
 #include <stdint.h>
 
+#include "vec2.h"
+
 #define TEXTURE_CHARACTER (Texture){'@', '@'}
 
 typedef struct {
-    uint32_t x;
-    uint32_t y;
+    Vec2 position;
 
     uint32_t hp;
 } Character;
 
-uint32_t* Character_getX();
-uint32_t* Character_getY();
+float* Character_getX();
+float* Character_getY();
 uint32_t* Character_getHp();
