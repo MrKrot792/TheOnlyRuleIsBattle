@@ -14,6 +14,7 @@ source_c = [
   'src/app.c',
   'src/vec2.c',
   'src/fps.c',
+  'src/log.c',
 ]
 
 inc = include_directories('include')

@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include "app.h"
+#include "log.h"
 
 int main() {
     App_init();
+    Log(LOG_INFO, "Starting the game instance.");
+
     int error = App_loop();
     App_deinit();
 

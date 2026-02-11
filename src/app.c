@@ -5,6 +5,7 @@
 #include "events.h"
 #include "render.h"
 #include "fps.h"
+#include "log.h"
 
 static bool running = true;
 static int error = APP_OK;
@@ -25,11 +26,13 @@ static void App_ncursesDeinit() { endwin(); }
 void App_init() {
     World_init(WORLD_WIDTH, WORLD_HEIGHT);
     App_ncursesInit();
+    Log_init();
 }
 
 void App_deinit() {
     World_deinit();
     App_ncursesDeinit();
+    Log_deinit();
 }
 
 int App_loop() {
