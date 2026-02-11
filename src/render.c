@@ -11,6 +11,9 @@
 #include "app.h"
 #include "vec2.h"
 
+Camera cam = {0};
+
+// Changes `position` to it's position in camera's space
 #define CAMERA(position) (Vec2){(int32_t)position.x + (RENDER_WIDTH/4), (int32_t)position.y + (RENDER_HEIGHT/2)}
 
 static void Render_drawTextureAt(Vec2 position, const Texture texture) {
@@ -29,7 +32,7 @@ static void GCC_PRINTFLIKE(2, 3) Render_drawTextAt(Vec2 position, const char* te
 }
 
 static void Render_drawCharacter() {
-    Render_drawTextureAt(Vec2_create(*Character_getX(), *Character_getY()), TEXTURE_CHARACTER);
+    Render_drawTextureAt(Character_getPosition(), TEXTURE_CHARACTER);
 }
 
 static void Render_drawUI() {
@@ -37,9 +40,9 @@ static void Render_drawUI() {
     Render_drawTextAt(Vec2_create(0, RENDER_REAL_HEIGHT - 1),
             "HP: %d; POS: %Gx, %Gy; FPS: %d; Delta: %f;", 
 
-            *Character_getHp(), 
-            *Character_getX(), 
-            *Character_getY(),
+            Character_getHp(), 
+            Character_getX(), 
+            Character_getY(),
             fps.fps,
             fps.delta);
 }

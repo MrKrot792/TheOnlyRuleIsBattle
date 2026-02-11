@@ -9,18 +9,17 @@ void Events_pollEvents() {
 
     switch (ch) {
         case 'a':
-            *Character_getX() -= 1;
+            Character_setX(Character_getX() - 1);
             break;
         case 'd':
-            *Character_getX() += 1;
+            Character_setX(Character_getX() + 1);
             break;
         case 'w':
-            *Character_getY() -= 1;
+            Character_setY(Character_getY() - 1);
             break;
         case 's':
-            *Character_getY() += 1;
+            Character_setY(Character_getY() + 1);
             break;
-
         case 'q':
             App_break(APP_OK);
             break;
