@@ -1,3 +1,4 @@
+#include <string.h>
 #include <time.h>
 
 #include "app.h"
@@ -7,6 +8,8 @@
 
 static bool running = true;
 static int error = APP_OK;
+static bool errorMessagePresent = false;
+static char errorMessage[2048] = {0};
 
 static float fps = 0.f;
 
@@ -60,6 +63,19 @@ void App_break(int code) {
     running = false;
 }
 
-float App_getFps() {
-    return fps;
+void App_breakWithMessage(int code, const char* message) {
+    error = code;
+    running = false;
+    errorMessagePresent = true;
+    strcpy(errorMessage, message);
 }
+
+const char* App_errno() {
+    if (errorMessagePresent)
+        return errorMessage;
+    else
+        return "No error";
+}
+
+bool App_isErrorMessagePresent() { return errorMessagePresent; }
+float App_getFps() { return fps; }

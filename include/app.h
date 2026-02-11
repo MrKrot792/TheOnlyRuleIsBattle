@@ -2,7 +2,8 @@
 #include <ncurses.h>
 
 #define APP_OK 0
-#define APP_ERROR -1
+#define APP_GENERIC_ERROR -1
+#define APP_SEGFAULT -2
 
 #define WORLD_WIDTH 800
 #define WORLD_HEIGHT 800
@@ -10,8 +11,13 @@
 void App_init();
 void App_deinit();
 
-// Helpers
+// Errors
 void App_break(int code);
+void App_breakWithMessage(int code, const char* message);
+const char* App_errno();
+bool App_isErrorMessagePresent();
+
+// Helpers
 float App_getFps();
 
 // Returns an error, if there's any, if there weren't any erros, returns 0 (APP_OK)
