@@ -6,26 +6,30 @@
 #include "world.h"
 #include "character.h"
 #include "app.h"
+#include "vec2.h"
 
-static void Render_drawTextureAt(uint32_t x, uint32_t y, Texture texture) {
-    mvaddch(y, x*2,   texture[0]);
-    mvaddch(y, x*2+1, texture[1]);
+static void Render_drawTextureAt(Vec2 position, Texture texture) {
+    int32_t x_camera = (int32_t)position.x + (RENDER_WIDTH/4);
+    int32_t y_camera = (int32_t)position.y + (RENDER_HEIGHT/2);
+
+    mvaddch(y_camera, x_camera*2,   texture[0]);
+    mvaddch(y_camera, x_camera*2+1, texture[1]);
 }
 
-static void GCC_PRINTFLIKE(3, 4) Render_drawTextAt(uint32_t x, uint32_t y, const char* text, ...) {
+static void GCC_PRINTFLIKE(2, 3) Render_drawTextAt(Vec2 position, const char* text, ...) {
     va_list ap;
     va_start(ap, text);
-    mvinch(y, x);
+    mvinch(position.y, position.x);
     vw_printw(stdscr, text, ap);
     va_end(ap);
 }
 
 static void Render_drawCharacter() {
-    Render_drawTextureAt(*Character_getX(), *Character_getY(), TEXTURE_CHARACTER);
+    Render_drawTextureAt(Vec2_create(*Character_getX(), *Character_getY()), TEXTURE_CHARACTER);
 }
 
 static void Render_drawUI() {
-    Render_drawTextAt(0, LINES-1, 
+    Render_drawTextAt(Vec2_create(0, LINES-1),
             "HP: %d; POS: %Gx, %Gy; FPS: %f;", 
 
             *Character_getHp(), 
