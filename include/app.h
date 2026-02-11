@@ -1,4 +1,5 @@
 #pragma once
+#include "fps.h"
 #include <ncurses.h>
 
 #define APP_OK 0
@@ -18,7 +19,7 @@ const char* App_errno();
 bool App_isErrorMessagePresent();
 
 // Helpers
-float App_getFps();
+FpsInfo App_getFps();
 
 // Returns an error, if there's any, if there weren't any erros, returns 0 (APP_OK)
 int App_loop();

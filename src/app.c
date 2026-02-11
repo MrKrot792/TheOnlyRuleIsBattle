@@ -1,17 +1,17 @@
 #include <string.h>
-#include <time.h>
 
 #include "app.h"
 #include "world.h"
 #include "events.h"
 #include "render.h"
+#include "fps.h"
 
 static bool running = true;
 static int error = APP_OK;
 static bool errorMessagePresent = false;
 static char errorMessage[2048] = {0};
 
-static float fps = 0.f;
+static FpsInfo fps = {0};
 
 static void App_ncursesInit() {
     initscr();
@@ -21,12 +21,6 @@ static void App_ncursesInit() {
 }
 
 static void App_ncursesDeinit() { endwin(); }
-
-static double App_now() {
-    struct timespec ts;
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-    return ts.tv_sec + ts.tv_nsec / 1e9;
-}
 
 void App_init() {
     World_init(WORLD_WIDTH, WORLD_HEIGHT);
@@ -39,20 +33,14 @@ void App_deinit() {
 }
 
 int App_loop() {
-    double last = App_now();
-
     while (running) {
-        // FPS stuff
-        double current = App_now();
-        double delta = current - last;
-        fps = 1.0 / delta;
-
+        Fps_frameStart();
         Events_pollEvents();
 
         erase();
             Render_drawAll();
         refresh();
-        last = current;
+        fps = Fps_frameEnd();
     }
 
     return error;
@@ -78,4 +66,4 @@ const char* App_errno() {
 }
 
 bool App_isErrorMessagePresent() { return errorMessagePresent; }
-float App_getFps() { return fps; }
+FpsInfo App_getFps() { return fps; }

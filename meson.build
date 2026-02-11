@@ -13,6 +13,7 @@ source_c = [
   'src/events.c',
   'src/app.c',
   'src/vec2.c',
+  'src/fps.c',
 ]
 
 inc = include_directories('include')
