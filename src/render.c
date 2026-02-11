@@ -1,20 +1,23 @@
 #include <stdint.h>
 #include <ncurses.h>
 #include <stdarg.h>
+#include <stdio.h>
 
 #include "render.h"
 #include "fps.h"
+#include "log.h"
 #include "world.h"
 #include "character.h"
 #include "app.h"
 #include "vec2.h"
 
-static void Render_drawTextureAt(Vec2 position, Texture texture) {
-    int32_t x_camera = (int32_t)position.x + (RENDER_WIDTH/4);
-    int32_t y_camera = (int32_t)position.y + (RENDER_HEIGHT/2);
+#define CAMERA(position) (Vec2){(int32_t)position.x + (RENDER_WIDTH/4), (int32_t)position.y + (RENDER_HEIGHT/2)}
 
-    mvaddch(y_camera, x_camera*2,   texture[0]);
-    mvaddch(y_camera, x_camera*2+1, texture[1]);
+static void Render_drawTextureAt(Vec2 position, const Texture texture) {
+    Vec2 camera = CAMERA(position);
+
+    mvaddch(camera.y, camera.x*2,   texture[0]);
+    mvaddch(camera.y, camera.x*2+1, texture[1]);
 }
 
 static void GCC_PRINTFLIKE(2, 3) Render_drawTextAt(Vec2 position, const char* text, ...) {
@@ -41,7 +44,20 @@ static void Render_drawUI() {
             fps.delta);
 }
 
+static void Render_drawWorld() {
+    const Vec2 size = World_getSize();
+    for (int i = 0; i < size.y - 1; i++) {
+        for (int j = 0; j < size.x - 1; j++) {
+            const Vec2 position = Vec2_create(j, i);
+            const Block *block = World_getAt(position);
+
+            Render_drawTextureAt(position, block->texture);
+        }
+    }
+}
+
 void Render_drawAll() {
+    Render_drawWorld();
     Render_drawCharacter();
     Render_drawUI();
 }

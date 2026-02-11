@@ -6,6 +6,7 @@ typedef char Texture[2];
 
 #define TEXTURE_EMPTY_BLOCK (Texture){'_', ' '}
 #define TEXTURE_SOLID_BLOCK (Texture){'[', ']'}
+#define TEXTURE_ERROR (Texture){'!', 'E'}
 
 #define TEXTURE_DEFAULT TEXTURE_EMPTY_BLOCK
 
