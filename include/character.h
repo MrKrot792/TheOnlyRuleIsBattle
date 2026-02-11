@@ -13,4 +13,5 @@ typedef struct {
 
 float* Character_getX();
 float* Character_getY();
+Vec2* Character_getPosition();
 uint32_t* Character_getHp();

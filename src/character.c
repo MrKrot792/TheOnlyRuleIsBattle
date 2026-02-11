@@ -1,7 +1,8 @@
 #include "character.h"
 
-static Character GlobalCharacter = {0};
+static Character Player = {0};
 
-float* Character_getX()  { return &GlobalCharacter.position.x; }
-float* Character_getY()  { return &GlobalCharacter.position.y; }
-uint32_t* Character_getHp() { return &GlobalCharacter.hp; }
+float* Character_getX()       { return &Player.position.x; }
+float* Character_getY()       { return &Player.position.y; }
+Vec2* Character_getPosition() { return &Player.position; }
+uint32_t* Character_getHp()   { return &Player.hp; }
