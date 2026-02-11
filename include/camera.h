@@ -4,5 +4,5 @@
 typedef Vec2 Camera;
 
 // New camera's position is `CameraPosition + offset`
-void Camera_translate(Vec2 offset);
+void Camera_set(Vec2 position);
 Vec2 Camera_get();
