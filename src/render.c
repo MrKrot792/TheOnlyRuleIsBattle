@@ -5,16 +5,16 @@
 
 #include "render.h"
 #include "fps.h"
-#include "log.h"
 #include "world.h"
 #include "character.h"
 #include "app.h"
 #include "vec2.h"
-
-Camera cam = {0};
+#include "camera.h"
 
 // Changes `position` to it's position in camera's space
-#define CAMERA(position) (Vec2){(int32_t)position.x + (RENDER_WIDTH/4), (int32_t)position.y + (RENDER_HEIGHT/2)}
+// This is somehow really slow
+#define CAMERA(position) Vec2_sub((Vec2){(int32_t)position.x + (RENDER_WIDTH/4), \
+                                         (int32_t)position.y + (RENDER_HEIGHT/2)}, Camera_get())
 
 static void Render_drawTextureAt(Vec2 position, const Texture texture) {
     Vec2 camera = CAMERA(position);
