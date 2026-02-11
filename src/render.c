@@ -34,7 +34,7 @@ static void Render_drawCharacter() {
 
 static void Render_drawUI() {
     FpsInfo fps = App_getFps();
-    Render_drawTextAt(Vec2_create(0, LINES-1),
+    Render_drawTextAt(Vec2_create(0, RENDER_REAL_HEIGHT - 1),
             "HP: %d; POS: %Gx, %Gy; FPS: %d; Delta: %f;", 
 
             *Character_getHp(), 
