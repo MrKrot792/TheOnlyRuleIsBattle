@@ -24,3 +24,4 @@ void World_init(uint32_t width, uint32_t height);
 void World_deinit();
 
 Block* World_getAt(Vec2 position);
+Vec2 World_getSize();
