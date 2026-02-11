@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <stdlib.h>
 
 #include "world.h"
@@ -19,6 +20,6 @@ void World_deinit() {
     free(GlobalWorld.data); 
 }
 
-Block* World_getAt(uint32_t x, uint32_t y) {
-    return &GlobalWorld.data[y * GlobalWorld.width + x];
+Block* World_getAt(Vec2 position) {
+    return &GlobalWorld.data[(uint32_t)position.y * GlobalWorld.width + (uint32_t)position.x];
 }

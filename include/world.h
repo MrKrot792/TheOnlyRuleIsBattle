@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include "vec2.h"
 
 typedef char Texture[2];
 
@@ -22,4 +23,4 @@ typedef struct {
 void World_init(uint32_t width, uint32_t height);
 void World_deinit();
 
-Block* World_getAt(uint32_t x, uint32_t y);
+Block* World_getAt(Vec2 position);
