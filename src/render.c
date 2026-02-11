@@ -48,8 +48,8 @@ static void Render_drawUI() {
 
 static void Render_drawWorld() {
     const Vec2 size = World_getSize();
-    for (int i = 0; i < size.y - 1; i++) {
-        for (int j = 0; j < size.x - 1; j++) {
+    for (int i = 0; i < size.y; i++) {
+        for (int j = 0; j < size.x; j++) {
             const Vec2 position = Vec2_create(j, i);
             const Block *block = World_getAt(position);
 
