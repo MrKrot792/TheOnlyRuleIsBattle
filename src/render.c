@@ -5,6 +5,7 @@
 
 #include "render.h"
 #include "fps.h"
+#include "texture.h"
 #include "world.h"
 #include "character.h"
 #include "app.h"
@@ -14,13 +15,17 @@
 // Changes `position` to it's position in camera's space
 // This is somehow really slow
 #define CAMERA(position) Vec2_sub((Vec2){(int32_t)position.x + (RENDER_WIDTH/4), \
-                                         (int32_t)position.y + (RENDER_HEIGHT/2)}, Camera_get())
+                                         (int32_t)position.y + (RENDER_HEIGHT/2)}, \
+                                         Camera_get())
 
+static uint8_t texture_buffer[2] = {0};
 static void Render_drawTextureAt(Vec2 position, const Texture texture) {
     Vec2 camera = CAMERA(position);
 
-    mvaddch(camera.y, camera.x*2,   texture[0]);
-    mvaddch(camera.y, camera.x*2+1, texture[1]);
+    Texture_get(texture_buffer, texture);
+
+    mvaddch(camera.y, camera.x*2,   texture_buffer[0]);
+    mvaddch(camera.y, camera.x*2+1, texture_buffer[1]);
 }
 
 static void GCC_PRINTFLIKE(2, 3) Render_drawTextAt(Vec2 position, const char* text, ...) {
@@ -32,7 +37,7 @@ static void GCC_PRINTFLIKE(2, 3) Render_drawTextAt(Vec2 position, const char* te
 }
 
 static void Render_drawCharacter() {
-    Render_drawTextureAt(Character_getPosition(), TEXTURE_CHARACTER);
+    Render_drawTextureAt(Character_getPosition(), Texture_create(TEXTURE_CHARACTER));
 }
 
 static void Render_drawUI() {

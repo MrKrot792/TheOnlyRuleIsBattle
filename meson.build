@@ -14,7 +14,9 @@ source_c = [
   'src/app.c',
   'src/fps.c',
   'src/log.c',
-  'src/camera.c'
+  'src/camera.c',
+  'src/texture.c',
+  'src/blocks.c'
 ]
 
 inc = include_directories('include')

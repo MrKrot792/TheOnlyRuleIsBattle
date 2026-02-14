@@ -1,6 +1,7 @@
 #include <string.h>
 
 #include "app.h"
+#include "blocks.h"
 #include "world.h"
 #include "events.h"
 #include "render.h"
@@ -24,6 +25,7 @@ static void App_ncursesInit() {
 static void App_ncursesDeinit() { endwin(); }
 
 void App_init() {
+    Blocks_init();
     World_init(WORLD_WIDTH, WORLD_HEIGHT);
     App_ncursesInit();
     Log_init();
