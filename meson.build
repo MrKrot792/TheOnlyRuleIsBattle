@@ -27,5 +27,4 @@ TheOnlyRuleIsBattle = executable('torib',
   install : true,
   include_directories: inc,
   link_args: [ '-ggdb', '-lm' ],
-  c_args: [ '-O0' ],
 )
