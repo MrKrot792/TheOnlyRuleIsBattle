@@ -1,40 +1,46 @@
 #include <stdint.h>
 #include <ncurses.h>
 #include <stdarg.h>
+#include <stdio.h>
 
 #include "render.h"
+#include "fps.h"
+#include "texture.h"
 #include "world.h"
 #include "character.h"
 #include "app.h"
+#include "vec2.h"
+#include "camera.h"
 
-static void Render_drawTextureAt(uint32_t x, uint32_t y, Texture texture) {
-    mvaddch(y, x*2,   texture[0]);
-    mvaddch(y, x*2+1, texture[1]);
+// Changes `position` to it's position in camera's space
+// This is somehow really slow
+#define CAMERA(position) Vec2_sub((Vec2){(int32_t)position.x + (RENDER_WIDTH/4), \
+                                         (int32_t)position.y + (RENDER_HEIGHT/2)}, \
+                                         Camera_get())
+
+static uint8_t texture_buffer[2] = {0};
+void Render_drawTextureAtCamera(Vec2 position, const Texture texture) {
+    Vec2 camera = CAMERA(position);
+
+    Texture_get(texture_buffer, texture);
+
+    mvaddch(camera.y, camera.x*2,   texture_buffer[0]);
+    mvaddch(camera.y, camera.x*2+1, texture_buffer[1]);
 }
 
-static void GCC_PRINTFLIKE(3, 4) Render_drawTextAt(uint32_t x, uint32_t y, const char* text, ...) {
+void Render_drawTextureAt(Vec2 position, const Texture texture) {
+    Vec2 camera = position;
+
+    Texture_get(texture_buffer, texture);
+
+    mvaddch(camera.y, camera.x*2,   texture_buffer[0]);
+    mvaddch(camera.y, camera.x*2+1, texture_buffer[1]);
+}
+
+void GCC_PRINTFLIKE(2, 3) Render_drawTextAt(Vec2 position, const char* text, ...) {
     va_list ap;
     va_start(ap, text);
-    mvinch(y, x);
+    mvinch(position.y, position.x);
     vw_printw(stdscr, text, ap);
     va_end(ap);
-}
-
-static void Render_drawCharacter() {
-    Render_drawTextureAt(*Character_getX(), *Character_getY(), TEXTURE_CHARACTER);
-}
-
-static void Render_drawUI() {
-    Render_drawTextAt(0, LINES-1, 
-            "HP: %d; POS: %dx, %dy; FPS: %f;", 
-
-            *Character_getHp(), 
-            *Character_getX(), 
-            *Character_getY(),
-            App_getFps());
-}
-
-void Render_drawAll() {
-    Render_drawCharacter();
-    Render_drawUI();
 }

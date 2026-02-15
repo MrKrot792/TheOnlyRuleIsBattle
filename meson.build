@@ -10,9 +10,16 @@ source_c = [
   'src/main.c',
   'src/render.c',
   'src/world.c',
-  'src/events.c',
   'src/app.c',
-  'src/vec2.c',
+  'src/fps.c',
+  'src/log.c',
+  'src/camera.c',
+  'src/texture.c',
+  'src/blocks.c',
+  'src/layer.c',
+
+  'src/layers/game.c',
+  'src/layers/exit_button.c'
 ]
 
 inc = include_directories('include')
@@ -22,5 +29,5 @@ TheOnlyRuleIsBattle = executable('torib',
   dependencies : [ ncurses_dep ],
   install : true,
   include_directories: inc,
-  link_args: [ '-ggdb' ],
+  link_args: [ '-ggdb', '-lm' ],
 )

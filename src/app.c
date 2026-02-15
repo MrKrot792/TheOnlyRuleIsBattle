@@ -1,14 +1,21 @@
-#include <time.h>
+#include <string.h>
 
 #include "app.h"
+#include "blocks.h"
+#include "layer.h"
 #include "world.h"
-#include "events.h"
-#include "render.h"
+#include "fps.h"
+#include "log.h"
+
+#include "layers/game.h"
+#include "layers/exit_button.h"
 
 static bool running = true;
 static int error = APP_OK;
+static bool error_message_present = false;
+static char error_message[2048] = {0};
 
-static float fps = 0.f;
+static FpsInfo fps = {0};
 
 static void App_ncursesInit() {
     initscr();
@@ -19,37 +26,33 @@ static void App_ncursesInit() {
 
 static void App_ncursesDeinit() { endwin(); }
 
-static double App_now() {
-    struct timespec ts;
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-    return ts.tv_sec + ts.tv_nsec / 1e9;
-}
-
 void App_init() {
+    Blocks_init();
     World_init(WORLD_WIDTH, WORLD_HEIGHT);
     App_ncursesInit();
+    Log_init();
+
+    Layer_create(layerExitButton());
+    Layer_create(layerGame());
 }
 
 void App_deinit() {
     World_deinit();
     App_ncursesDeinit();
+    Log_deinit();
 }
 
 int App_loop() {
-    double last = App_now();
-
     while (running) {
-        // FPS stuff
-        double current = App_now();
-        double delta = current - last;
-        fps = 1.0 / delta;
+        Fps_frameStart();
+            Layers_events();
+            Layers_update();
 
-        Events_pollEvents();
-
-        erase();
-            Render_drawAll();
-        refresh();
-        last = current;
+            // Not `clear()` because it causes flickering
+            erase();
+                Layers_render();
+            refresh();
+        fps = Fps_frameEnd();
     }
 
     return error;
@@ -60,6 +63,19 @@ void App_break(int code) {
     running = false;
 }
 
-float App_getFps() {
-    return fps;
+void App_breakWithMessage(int code, const char* message) {
+    error = code;
+    running = false;
+    error_message_present = true;
+    strcpy(error_message, message);
 }
+
+const char* App_errno() {
+    if (error_message_present)
+        return error_message;
+    else
+        return "No error";
+}
+
+bool App_isErrorMessagePresent() { return error_message_present; }
+FpsInfo App_getFps() { return fps; }

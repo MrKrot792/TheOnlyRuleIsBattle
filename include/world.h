@@ -1,16 +1,7 @@
 #pragma once
 #include <stdint.h>
-
-typedef char Texture[2];
-
-#define TEXTURE_EMPTY_BLOCK (Texture){'_', ' '}
-#define TEXTURE_SOLID_BLOCK (Texture){'[', ']'}
-
-#define TEXTURE_DEFAULT TEXTURE_EMPTY_BLOCK
-
-typedef struct {
-    Texture texture;
-} Block;
+#include "vec2.h"
+#include "blocks.h"
 
 typedef struct {
     Block* data;
@@ -22,4 +13,7 @@ typedef struct {
 void World_init(uint32_t width, uint32_t height);
 void World_deinit();
 
-Block* World_getAt(uint32_t x, uint32_t y);
+// Returns a pointer to the block at `position` position
+Block* World_getAt(Vec2 position);
+void World_setAt(Vec2 position, Block block);
+Vec2 World_getSize();
