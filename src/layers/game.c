@@ -5,12 +5,12 @@
 #include "character.h"
 #include "world.h"
 
-static void Render_drawCharacter() {
+static void drawCharacter() {
     Render_drawTextureAtCamera(Character_getPosition(), 
             Texture_create(TEXTURE_CHARACTER));
 }
 
-static void Render_drawWorld() {
+static void drawWorld() {
     const Vec2 size = World_getSize();
     for (int i = 0; i < size.y; i++) {
         for (int j = 0; j < size.x; j++) {
@@ -40,8 +40,8 @@ static bool event(int ch) {
     return false;
 }
 static void render() {
-    Render_drawWorld();
-    Render_drawCharacter();
+    drawWorld();
+    drawCharacter();
 }
 
 Layer layerGame() {
