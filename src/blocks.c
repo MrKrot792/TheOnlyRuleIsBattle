@@ -25,6 +25,10 @@ void Blocks_init() {
      */
 }
 
+void Blocks_deinit() {
+    free(registredBlocks);
+}
+
 Block Blocks_get(uint32_t index) {
     if (index > BLOCK_COUNT - 1) return (Block){
         .texture = Texture_create(TEXTURE_ERROR),

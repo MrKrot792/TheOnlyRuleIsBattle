@@ -2,16 +2,18 @@
 
 #include "app.h"
 #include "blocks.h"
+#include "layer.h"
 #include "world.h"
-#include "events.h"
-#include "render.h"
 #include "fps.h"
 #include "log.h"
 
+#include "layers/game.h"
+#include "layers/exit_button.h"
+
 static bool running = true;
 static int error = APP_OK;
-static bool errorMessagePresent = false;
-static char errorMessage[2048] = {0};
+static bool error_message_present = false;
+static char error_message[2048] = {0};
 
 static FpsInfo fps = {0};
 
@@ -29,6 +31,9 @@ void App_init() {
     World_init(WORLD_WIDTH, WORLD_HEIGHT);
     App_ncursesInit();
     Log_init();
+
+    Layer_create(layerExitButton());
+    Layer_create(layerGame());
 }
 
 void App_deinit() {
@@ -40,11 +45,13 @@ void App_deinit() {
 int App_loop() {
     while (running) {
         Fps_frameStart();
-        Events_pollEvents();
+            Layers_events();
+            Layers_update();
 
-        erase();
-            Render_drawAll();
-        refresh();
+            // Not `clear()` because it causes flickering
+            erase();
+                Layers_render();
+            refresh();
         fps = Fps_frameEnd();
     }
 
@@ -59,16 +66,16 @@ void App_break(int code) {
 void App_breakWithMessage(int code, const char* message) {
     error = code;
     running = false;
-    errorMessagePresent = true;
-    strcpy(errorMessage, message);
+    error_message_present = true;
+    strcpy(error_message, message);
 }
 
 const char* App_errno() {
-    if (errorMessagePresent)
-        return errorMessage;
+    if (error_message_present)
+        return error_message;
     else
         return "No error";
 }
 
-bool App_isErrorMessagePresent() { return errorMessagePresent; }
+bool App_isErrorMessagePresent() { return error_message_present; }
 FpsInfo App_getFps() { return fps; }

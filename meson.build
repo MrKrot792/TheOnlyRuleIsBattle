@@ -10,13 +10,16 @@ source_c = [
   'src/main.c',
   'src/render.c',
   'src/world.c',
-  'src/events.c',
   'src/app.c',
   'src/fps.c',
   'src/log.c',
   'src/camera.c',
   'src/texture.c',
-  'src/blocks.c'
+  'src/blocks.c',
+  'src/layer.c',
+
+  'src/layers/game.c',
+  'src/layers/exit_button.c'
 ]
 
 inc = include_directories('include')

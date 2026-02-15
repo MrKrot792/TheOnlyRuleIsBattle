@@ -19,7 +19,7 @@
                                          Camera_get())
 
 static uint8_t texture_buffer[2] = {0};
-static void Render_drawTextureAt(Vec2 position, const Texture texture) {
+void Render_drawTextureAtCamera(Vec2 position, const Texture texture) {
     Vec2 camera = CAMERA(position);
 
     Texture_get(texture_buffer, texture);
@@ -28,43 +28,19 @@ static void Render_drawTextureAt(Vec2 position, const Texture texture) {
     mvaddch(camera.y, camera.x*2+1, texture_buffer[1]);
 }
 
-static void GCC_PRINTFLIKE(2, 3) Render_drawTextAt(Vec2 position, const char* text, ...) {
+void Render_drawTextureAt(Vec2 position, const Texture texture) {
+    Vec2 camera = position;
+
+    Texture_get(texture_buffer, texture);
+
+    mvaddch(camera.y, camera.x*2,   texture_buffer[0]);
+    mvaddch(camera.y, camera.x*2+1, texture_buffer[1]);
+}
+
+void GCC_PRINTFLIKE(2, 3) Render_drawTextAt(Vec2 position, const char* text, ...) {
     va_list ap;
     va_start(ap, text);
     mvinch(position.y, position.x);
     vw_printw(stdscr, text, ap);
     va_end(ap);
-}
-
-static void Render_drawCharacter() {
-    Render_drawTextureAt(Character_getPosition(), Texture_create(TEXTURE_CHARACTER));
-}
-
-static void Render_drawUI() {
-    FpsInfo fps = App_getFps();
-    Vec2 position = Character_getPosition();
-    Render_drawTextAt(Vec2_create(0, RENDER_REAL_HEIGHT - 1),
-            "HP: %d; POS: %Gx, %Gy; FPS: %d; Delta: %f;", 
-
-            Character_getHp(), 
-            position.x, position.y,
-            fps.fps, fps.delta);
-}
-
-static void Render_drawWorld() {
-    const Vec2 size = World_getSize();
-    for (int i = 0; i < size.y; i++) {
-        for (int j = 0; j < size.x; j++) {
-            const Vec2 position = Vec2_create(j, i);
-            const Block *block = World_getAt(position);
-
-            Render_drawTextureAt(position, block->texture);
-        }
-    }
-}
-
-void Render_drawAll() {
-    Render_drawWorld();
-    Render_drawCharacter();
-    Render_drawUI();
 }
