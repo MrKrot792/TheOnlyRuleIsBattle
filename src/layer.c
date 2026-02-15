@@ -69,7 +69,7 @@ void Layers_update() {
     }
 }
 void Layers_render() {
-    for (int i = 0; i < layer_stack.count; i++) {
+    for (int i = layer_stack.count - 1; i > 0; i--) {
         SimpleFun_call(Stack_at(&layer_stack, i).render);
     }
 }
