@@ -52,11 +52,11 @@ static Layer Stack_at(Stack* s, uint32_t at) {
 Stack layer_stack = {0};
 
 uint32_t Layer_create(Layer layer) { 
-    layer.init();
+    SimpleFun_call(layer.init);
     return Stack_push(&layer_stack, layer); 
 }
 void Layer_destroy(uint32_t id) { 
-    Stack_at(&layer_stack, id).deinit();
+    SimpleFun_call(Stack_at(&layer_stack, id).deinit);
     Stack_removeAt(&layer_stack, id); 
 }
 void Layer_transition(uint32_t id, Layer layer) { 
@@ -65,18 +65,40 @@ void Layer_transition(uint32_t id, Layer layer) {
 
 void Layers_update() {
     for (int i = 0; i < layer_stack.count; i++) {
-        Stack_at(&layer_stack, i).update();
+        SimpleFun_call(Stack_at(&layer_stack, i).update);
     }
 }
 void Layers_render() {
     for (int i = 0; i < layer_stack.count; i++) {
-        Stack_at(&layer_stack, i).render();
+        SimpleFun_call(Stack_at(&layer_stack, i).render);
     }
 }
 void Layers_events() {
     int ch = getch();
 
     for (int i = 0; i < layer_stack.count; i++) {
-        if (Stack_at(&layer_stack, i).event(ch)) break;
+        if (EventFun_call(Stack_at(&layer_stack, i).event, ch)) break;
     }
+}
+
+void SimpleFun_call(SimpleFun fun) {
+    if (fun.present) fun.function();
+}
+bool EventFun_call(EventFun fun, int ch) {
+    if (fun.present) return fun.function(ch);
+    return false;
+}
+
+SimpleFun SimpleFun_make(SimpleFun_internal fun) {
+    return (SimpleFun){ .function = fun, .present = true, }; 
+}
+EventFun EventFun_make(EventFun_internal fun) {
+    return (EventFun){ .function = fun, .present = true, }; 
+}
+
+SimpleFun SimpleFun_empty(){ 
+    return (SimpleFun){ .function = NULL, .present = false }; 
+}
+EventFun EventFun_empty() {
+    return (EventFun){ .function = NULL, .present = false };
 }

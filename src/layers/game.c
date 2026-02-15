@@ -1,6 +1,6 @@
 #include "layers/game.h"
 
-#include "app.h"
+#include "layer.h"
 #include "render.h"
 #include "character.h"
 #include "world.h"
@@ -8,17 +8,6 @@
 static void Render_drawCharacter() {
     Render_drawTextureAtCamera(Character_getPosition(), 
             Texture_create(TEXTURE_CHARACTER));
-}
-
-static void Render_drawUI() {
-    FpsInfo fps = App_getFps();
-    Vec2 position = Character_getPosition();
-    Render_drawTextAt(Vec2_create(0, RENDER_REAL_HEIGHT - 1),
-            "HP: %d; POS: %Gx, %Gy; FPS: %d; Delta: %f;", 
-
-            Character_getHp(), 
-            position.x, position.y,
-            fps.fps, fps.delta);
 }
 
 static void Render_drawWorld() {
@@ -33,8 +22,6 @@ static void Render_drawWorld() {
     }
 }
 
-static void init()        {}
-static void deinit()      {}
 static bool event(int ch) {
     switch (ch) {
         case 'a':
@@ -55,16 +42,14 @@ static bool event(int ch) {
 static void render() {
     Render_drawWorld();
     Render_drawCharacter();
-    Render_drawUI();
 }
-static void update()      {}
 
 Layer layerGame() {
     return (Layer){
-        .init = init,
-        .deinit = deinit,
-        .event = event,
-        .render = render,
-        .update = update,
+        .init = SimpleFun_empty(),
+        .deinit = SimpleFun_empty(),
+        .event = EventFun_make(event),
+        .render = SimpleFun_make(render),
+        .update = SimpleFun_empty(),
     };
 }

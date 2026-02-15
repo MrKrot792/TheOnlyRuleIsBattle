@@ -9,6 +9,7 @@
 
 #include "layers/game.h"
 #include "layers/exit_button.h"
+#include "layers/ui.h"
 
 static bool running = true;
 static int error = APP_OK;
@@ -33,6 +34,7 @@ void App_init() {
     Log_init();
 
     Layer_create(layerExitButton());
+    Layer_create(layerUI());
     Layer_create(layerGame());
 }
 

@@ -2,17 +2,36 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+typedef void (*SimpleFun_internal)();
+typedef struct {
+    bool present;
+    void (*function)();
+} SimpleFun;
+
+typedef bool (*EventFun_internal)(int ch);
+typedef struct {
+    bool present;
+    bool (*function)(int ch);
+} EventFun;
+
 // TODO: Make functions optional
 typedef struct {
-    void (*init)();
-    void (*deinit)();
+    SimpleFun init;
+    SimpleFun deinit;
 
-    void (*update)();
-    void (*render)();
+    SimpleFun update;
+    SimpleFun render;
 
     // If returns false, then the events don't go lower
-    bool (*event)(int ch);
+    EventFun event;
 } Layer;
+
+void SimpleFun_call(SimpleFun fun);
+bool EventFun_call(EventFun fun, int ch);
+SimpleFun SimpleFun_make(SimpleFun_internal fun);
+EventFun EventFun_make(EventFun_internal fun);
+SimpleFun SimpleFun_empty();
+EventFun EventFun_empty();
 
 // For interacting with the layer stack
 

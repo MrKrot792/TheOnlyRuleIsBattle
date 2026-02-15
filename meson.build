@@ -19,7 +19,8 @@ source_c = [
   'src/layer.c',
 
   'src/layers/game.c',
-  'src/layers/exit_button.c'
+  'src/layers/exit_button.c',
+  'src/layers/ui.c'
 ]
 
 inc = include_directories('include')
