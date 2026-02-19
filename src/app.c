@@ -1,4 +1,5 @@
 #include <string.h>
+#include <time.h>
 
 #include "app.h"
 #include "blocks.h"
@@ -27,6 +28,12 @@ static void App_ncursesInit() {
 
 static void App_ncursesDeinit() { endwin(); }
 
+// TODO: Make this handle time <1sec
+static void App_sleepFor(float nanosecs) {
+    struct timespec time_to_sleep = { .tv_nsec = nanosecs * 1e9f };
+    nanosleep(&time_to_sleep, NULL);
+}
+
 void App_init() {
     Blocks_init();
     World_init(WORLD_WIDTH, WORLD_HEIGHT);
@@ -36,6 +43,8 @@ void App_init() {
     Layer_create(layerExitButton());
     Layer_create(layerUI());
     Layer_create(layerGame());
+
+    Fps_setFramesPerSecond(60);
 }
 
 void App_deinit() {
@@ -54,6 +63,7 @@ int App_loop() {
             erase();
                 Layers_render();
             refresh();
+        App_sleepFor(Fps_timeToWait(fps));
         fps = Fps_frameEnd();
     }
 

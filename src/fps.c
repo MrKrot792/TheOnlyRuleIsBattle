@@ -8,6 +8,8 @@ static uint32_t frames_count;
 static uint32_t frames;
 static float elapsed;
 
+static uint32_t target_fps = 60; // can be modified
+
 void Fps_frameStart() {
     clock_gettime(CLOCK_MONOTONIC, &frame_start);
 }
@@ -35,3 +37,12 @@ FpsInfo Fps_frameEnd() {
         .fps_average = 1.0/d,
     };
 }
+
+// TODO: This is too buggy, for some reason
+float Fps_timeToWait(FpsInfo info) {
+    float result = 1.0 / (float)target_fps - info.delta;
+    if (result > 0) return result; else return 0.0;
+}
+
+void Fps_setFramesPerSecond(uint32_t new_fps) { target_fps = new_fps; }
+uint32_t Fps_getFramesPerSecond()             { return target_fps; }

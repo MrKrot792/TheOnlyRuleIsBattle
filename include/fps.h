@@ -11,3 +11,7 @@ typedef struct {
 
 void Fps_frameStart();
 FpsInfo Fps_frameEnd();
+
+float Fps_timeToWait(FpsInfo info);
+void Fps_setFramesPerSecond(uint32_t new_fps);
+uint32_t Fps_getFramesPerSecond();
