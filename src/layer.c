@@ -52,8 +52,9 @@ static Layer Stack_at(Stack* s, uint32_t at) {
 Stack layer_stack = {0};
 
 uint32_t Layer_create(Layer layer) { 
-    SimpleFun_call(layer.init);
-    return Stack_push(&layer_stack, layer); 
+    uint32_t id =Stack_push(&layer_stack, layer);  
+    InitFun_call(layer.init, id);
+    return id;
 }
 void Layer_destroy(uint32_t id) { 
     SimpleFun_call(Stack_at(&layer_stack, id).deinit);
@@ -86,7 +87,10 @@ void SimpleFun_call(SimpleFun fun) {
 }
 bool EventFun_call(EventFun fun, int ch) {
     if (fun.present) return fun.function(ch);
-    return false;
+    else return false;
+}
+void InitFun_call(InitFun fun, uint32_t id) {
+    if (fun.present) return fun.function(id);
 }
 
 SimpleFun SimpleFun_make(SimpleFun_internal fun) {
@@ -95,10 +99,16 @@ SimpleFun SimpleFun_make(SimpleFun_internal fun) {
 EventFun EventFun_make(EventFun_internal fun) {
     return (EventFun){ .function = fun, .present = true, }; 
 }
+InitFun InitFun_make(InitFun_internal fun) {
+    return (InitFun){ .function = fun, .present = true, }; 
+}
 
 SimpleFun SimpleFun_empty(){ 
     return (SimpleFun){ .function = NULL, .present = false }; 
 }
 EventFun EventFun_empty() {
     return (EventFun){ .function = NULL, .present = false };
+}
+InitFun InitFun_empty() {
+    return (InitFun){ .function = NULL, .present = false };
 }

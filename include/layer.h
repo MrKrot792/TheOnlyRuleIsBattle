@@ -5,18 +5,23 @@
 typedef void (*SimpleFun_internal)();
 typedef struct {
     bool present;
-    void (*function)();
+    SimpleFun_internal function;
 } SimpleFun;
+
+typedef void (*InitFun_internal)(uint32_t id);
+typedef struct {
+    bool present;
+    InitFun_internal function;
+} InitFun;
 
 typedef bool (*EventFun_internal)(int ch);
 typedef struct {
     bool present;
-    bool (*function)(int ch);
+    EventFun_internal function;
 } EventFun;
 
-// TODO: Make functions optional
 typedef struct {
-    SimpleFun init;
+    InitFun   init;
     SimpleFun deinit;
 
     SimpleFun update;
@@ -28,10 +33,15 @@ typedef struct {
 
 void SimpleFun_call(SimpleFun fun);
 bool EventFun_call(EventFun fun, int ch);
+void InitFun_call(InitFun fun, uint32_t id);
+
 SimpleFun SimpleFun_make(SimpleFun_internal fun);
 EventFun EventFun_make(EventFun_internal fun);
+InitFun InitFun_make(InitFun_internal fun);
+
 SimpleFun SimpleFun_empty();
 EventFun EventFun_empty();
+InitFun InitFun_empty();
 
 // For interacting with the layer stack
 
