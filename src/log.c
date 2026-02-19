@@ -37,4 +37,6 @@ void GCC_PRINTFLIKE(2, 3) Log(uint32_t level, const char* message, ...) {
     vfprintf(logFile, message, ap);
     fprintf(logFile, "\n");
     va_end(ap);
+
+    fflush(logFile);
 }
