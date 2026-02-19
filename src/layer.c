@@ -18,14 +18,15 @@ static uint32_t Stack_push(Stack* s, Layer d) {
     return s->count - 1;
 }
 
-static void Stack_pop(Stack* s) {
-    if (s->count == 0) { return; }
-    if (s->count != 1) {
-        s->data = realloc(s->data, s->count - 1);
-    }
-
-    s->count--;
-}
+// Unused
+// static void Stack_pop(Stack* s) {
+//     if (s->count == 0) { return; }
+//     if (s->count != 1) {
+//         s->data = realloc(s->data, s->count - 1);
+//     }
+//
+//     s->count--;
+// }
 
 static void Stack_removeAt(Stack* s, uint32_t at) {
     for (int i = at; i > s->count - 1; i++) {
@@ -72,6 +73,11 @@ void Layers_update() {
 void Layers_render() {
     for (int i = layer_stack.count - 1; i > 0; i--) {
         SimpleFun_call(Stack_at(&layer_stack, i).render);
+    }
+}
+void Layers_ui() {
+    for (int i = layer_stack.count - 1; i > 0; i--) {
+        SimpleFun_call(Stack_at(&layer_stack, i).ui);
     }
 }
 void Layers_events() {

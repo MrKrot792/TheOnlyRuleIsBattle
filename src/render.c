@@ -4,11 +4,7 @@
 #include <stdio.h>
 
 #include "render.h"
-#include "fps.h"
 #include "texture.h"
-#include "world.h"
-#include "character.h"
-#include "app.h"
 #include "vec2.h"
 #include "camera.h"
 

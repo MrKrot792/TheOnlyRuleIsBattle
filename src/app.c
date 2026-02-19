@@ -62,6 +62,7 @@ int App_loop() {
             // Not `clear()` because it causes flickering
             erase();
                 Layers_render();
+                Layers_ui();
             refresh();
         App_sleepFor(Fps_timeToWait(fps));
         fps = Fps_frameEnd();

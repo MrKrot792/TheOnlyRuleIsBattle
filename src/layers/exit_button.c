@@ -10,7 +10,7 @@ static bool event(int ch) {
 
 Layer layerExitButton() {
     return (Layer){
-        .init = SimpleFun_empty(),
+        .init = InitFun_empty(),
         .deinit = SimpleFun_empty(),
         .event = EventFun_make(event),
         .render = SimpleFun_empty(),

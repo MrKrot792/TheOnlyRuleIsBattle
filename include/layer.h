@@ -26,6 +26,7 @@ typedef struct {
 
     SimpleFun update;
     SimpleFun render;
+    SimpleFun ui; // called after rendering
 
     // If returns false, then the events don't go lower
     EventFun event;
@@ -54,3 +55,4 @@ void Layer_transition(uint32_t id, Layer layer);
 void Layers_update();
 void Layers_render();
 void Layers_events();
+void Layers_ui();

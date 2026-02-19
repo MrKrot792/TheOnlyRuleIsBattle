@@ -17,10 +17,16 @@ source_c = [
   'src/texture.c',
   'src/blocks.c',
   'src/layer.c',
+  'src/aabb.c',
+  'src/moves.c',
+
+  'src/layers/exit_button.c',
+  'src/layers/ui.c',
 
   'src/layers/game.c',
-  'src/layers/exit_button.c',
-  'src/layers/ui.c'
+  'src/layers/game/attack.c',
+  'src/layers/game/play.c',
+  'src/layers/game/preview.c',
 ]
 
 inc = include_directories('include')
