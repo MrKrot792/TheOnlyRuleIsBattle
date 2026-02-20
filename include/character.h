@@ -6,9 +6,13 @@
 #define TEXTURE_CHARACTER (uint8_t[2]){'@', '@'}
 
 typedef struct {
-    Vec2 position;
-
+    // Ruptureness 'n vultureness
+    uint32_t ruptureness;
+    uint32_t vultureness;
     uint32_t hp;
+
+    Vec2 position;
+    Vec2 velocity;
 } Character;
 
 void Character_init();
