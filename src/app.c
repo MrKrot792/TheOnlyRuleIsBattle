@@ -3,6 +3,7 @@
 
 #include "app.h"
 #include "blocks.h"
+#include "character.h"
 #include "layer.h"
 #include "world.h"
 #include "fps.h"
@@ -39,7 +40,9 @@ void App_init() {
     World_init(WORLD_WIDTH, WORLD_HEIGHT);
     App_ncursesInit();
     Log_init();
+    Character_init();
 
+    // TODO (potentially): Move this to something like Layers_init(). 
     Layer_create(layerExitButton());
     Layer_create(layerUI());
     Layer_create(layerGame());
@@ -51,6 +54,8 @@ void App_deinit() {
     World_deinit();
     App_ncursesDeinit();
     Log_deinit();
+    Character_deinit();
+    Blocks_deinit();
 }
 
 int App_loop() {

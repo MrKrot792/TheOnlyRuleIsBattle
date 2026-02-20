@@ -21,3 +21,5 @@ typedef struct {
 // Must call this before using any blocks
 void Blocks_init();
 Block Blocks_get(uint32_t index);
+
+void Blocks_deinit();
