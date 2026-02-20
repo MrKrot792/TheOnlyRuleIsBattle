@@ -9,7 +9,7 @@
 #include "log.h"
 
 static void drawCharacter() {
-    Render_drawTextureAtCamera(Character_getPosition(), 
+    Render_drawTextureAtCamera(Character_get()->position, 
             Texture_create(TEXTURE_CHARACTER));
 }
 

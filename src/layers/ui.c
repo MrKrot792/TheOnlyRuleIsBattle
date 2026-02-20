@@ -12,11 +12,12 @@ static void ui() {
     clrtoeol();
 
     FpsInfo fps = App_getFps();
-    Vec2 position = Character_getPosition();
+    Character* chr = Character_get();
+    Vec2 position = chr->position;
     Render_drawTextAt(Vec2_create(0, RENDER_REAL_HEIGHT - 1),
             "HP: %d; POS: %Gx, %Gy; FPS: %d; Delta: %f;", 
 
-            Character_getHp(), 
+            chr->hp, 
             position.x, position.y,
             fps.fps, fps.delta);
 }
