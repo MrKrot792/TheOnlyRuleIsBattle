@@ -1,13 +1,12 @@
 #include "physics.h"
-#include "log.h"
+#include "vec2.h"
+
+#define DIV_BY 3.f
 
 void Physics_simulate(Character *c) {
-    // Doing nothin'!
-    Log(LOG_INFO, "Simulating the character...");
-}
+    c->position = Vec2_add(c->velocity, c->position);
+    c->velocity = Vec2_scale(c->velocity, 1.f/DIV_BY);
 
-Character Physics_simulateCopy(const Character *c) {
-    // Doing nothin'!
-    Log(LOG_INFO, "Simulating the character... but different");
-    return *c;
+    c->ruptureness--;
+    c->vultureness++;
 }
