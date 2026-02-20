@@ -44,18 +44,21 @@ void previewUi() {
     for (int i = 0; i < max_moves; i++) {
         char selected_p = '|';
         char selected_s = '|';
+
         if (selected_move == i) {
             selected_p = '{';
             selected_s = '}';
+            attron(A_BOLD | A_STANDOUT);
         }
 
         Render_drawTextAt((Vec2){width * i, RENDER_REAL_HEIGHT - 2}, "%c", selected_p);
 
         Render_drawTextAt((Vec2){(width * i) + 1, RENDER_REAL_HEIGHT - 2}, 
-                "%s at %d", Moves_getAt(i).move.name,
-                i);
+                "%-*s", width, Moves_getAt(i).move.name);
 
         Render_drawTextAt((Vec2){width * (i + 1) - 1, RENDER_REAL_HEIGHT - 2}, "%c", selected_s);
+
+        if (selected_move == i) attroff(A_BOLD | A_STANDOUT);
     }
 }
 
