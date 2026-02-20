@@ -19,6 +19,7 @@ source_c = [
   'src/layer.c',
   'src/aabb.c',
   'src/moves.c',
+  'src/physics.c',
 
   'src/layers/exit_button.c',
   'src/layers/ui.c',
