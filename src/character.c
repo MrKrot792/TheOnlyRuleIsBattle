@@ -10,7 +10,7 @@ void Character_init()   {
 
     Player->hp = 100;
     Player->ruptureness = 380;
-    Player->vultureness = 308;
+    Player->vultureness = 2;
 }
 void Character_deinit() { free(Player); }
 
