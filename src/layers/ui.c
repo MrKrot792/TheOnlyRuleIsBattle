@@ -15,11 +15,13 @@ static void ui() {
     Character* chr = Character_get();
     Vec2 position = chr->position;
     Render_drawTextAt(Vec2_create(0, RENDER_REAL_HEIGHT - 1),
-            "HP: %d; POS: %Gx, %Gy; FPS: %d; Delta: %f;", 
+            "POS: %Gx, %Gy; FPS: %d; Delta: %f; HP: %d; VN: %d; RN: %d;", 
 
-            chr->hp, 
             position.x, position.y,
-            fps.fps, fps.delta);
+            fps.fps, fps.delta,
+            chr->hp, 
+            chr->vultureness,
+            chr->ruptureness);
 }
 
 Layer layerUI() {
