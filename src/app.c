@@ -54,7 +54,6 @@ void App_deinit() {
     World_deinit();
     App_ncursesDeinit();
     Log_deinit();
-    Character_deinit();
     Blocks_deinit();
 }
 

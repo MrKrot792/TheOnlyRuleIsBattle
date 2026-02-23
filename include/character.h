@@ -16,6 +16,5 @@ typedef struct {
 } Character;
 
 void Character_init();
-void Character_deinit();
 
 Character* Character_get();

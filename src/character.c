@@ -12,6 +12,5 @@ void Character_init()   {
     Player->ruptureness = 380;
     Player->vultureness = 2;
 }
-void Character_deinit() { free(Player); }
 
 Character* Character_get() { return Player; }
