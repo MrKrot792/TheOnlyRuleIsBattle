@@ -23,6 +23,7 @@ source_c = [
 
   'src/layers/exit_button.c',
   'src/layers/ui.c',
+  'src/layers/terminal.c',
 
   'src/layers/game.c',
   'src/layers/game/attack.c',
