@@ -6,12 +6,13 @@
 #include "character.h"
 #include "layer.h"
 #include "world.h"
-#include "fps.h"
 #include "log.h"
 
 #include "layers/game.h"
 #include "layers/exit_button.h"
 #include "layers/ui.h"
+
+#include "fps.h"
 
 static bool running = true;
 static int error = APP_OK;
@@ -19,6 +20,7 @@ static bool error_message_present = false;
 static char error_message[2048] = {0};
 
 static FpsInfo fps = {0};
+static FpsState fps_state = {0};
 
 static void App_ncursesInit() {
     initscr();
@@ -47,7 +49,8 @@ void App_init() {
     Layer_create(layerUI());
     Layer_create(layerGame());
 
-    Fps_setFramesPerSecond(60);
+    fps_state = Fps_create();
+    Fps_setFramesPerSecond(&fps_state, 60);
 }
 
 void App_deinit() {
@@ -59,7 +62,7 @@ void App_deinit() {
 
 int App_loop() {
     while (running) {
-        Fps_frameStart();
+        Fps_frameStart(&fps_state);
             Layers_events();
             Layers_update();
 
@@ -68,8 +71,8 @@ int App_loop() {
                 Layers_render();
                 Layers_ui();
             refresh();
-        App_sleepFor(Fps_timeToWait(fps));
-        fps = Fps_frameEnd();
+        App_sleepFor(Fps_timeToWait(&fps_state, fps));
+        fps = Fps_frameEnd(&fps_state);
     }
 
     return error;
