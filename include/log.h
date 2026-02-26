@@ -13,7 +13,7 @@
 #define LOG_WARNING_STRING "[WARNING]"
 #define LOG_ERROR_STRING   "[ERROR  ]"
 
-#define LOG_LOG_UI_SIZE 4
+#define LOG_LOG_UI_SIZE 8
 
 typedef struct {
     uint32_t tail;
