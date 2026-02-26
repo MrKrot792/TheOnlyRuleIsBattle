@@ -53,7 +53,7 @@ static Layer Stack_at(Stack* s, uint32_t at) {
 Stack layer_stack = {0};
 
 uint32_t Layer_create(Layer layer) { 
-    uint32_t id =Stack_push(&layer_stack, layer);  
+    uint32_t id = Stack_push(&layer_stack, layer);  
     InitFun_call(layer.init, id);
     return id;
 }
@@ -62,7 +62,9 @@ void Layer_destroy(uint32_t id) {
     Stack_removeAt(&layer_stack, id); 
 }
 void Layer_transition(uint32_t id, Layer layer) { 
+    SimpleFun_call(Stack_at(&layer_stack, id).deinit);
     Stack_changeAt(&layer_stack, id, layer); 
+    InitFun_call(Stack_at(&layer_stack, id).init, id); // Oopsie, forgot to add this and was debugging two days!
 }
 
 void Layers_update() {

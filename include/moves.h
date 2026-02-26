@@ -11,13 +11,24 @@ typedef struct {
 } MoveResult;
 
 typedef struct {
+    bool vector; // Vec2
+    // Commented this one because it's not implemented yet
+    //bool number;
+} MoveParametersNeeded;
+
+typedef struct {
+    Vec2 vector;
+} MoveParameters;
+
+typedef struct {
     // To display this in the UI.
     const char* name;
     // In frames.
     uint32_t duration;
     // The function can access everything it wants using global functions.
     // The `frame` parameter indicates 
-    MoveResult (*function)(uint32_t max_frame, uint32_t frame);
+    MoveResult (*function)(uint32_t max_frame, uint32_t frame, MoveParameters params);
+    MoveParametersNeeded paramsNeeded;
 } Move;
 
 typedef struct {

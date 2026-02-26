@@ -4,9 +4,10 @@
 #include "layer.h"
 #include "character.h"
 #include "render.h"
+#include "vec2.h"
 #include "world.h"
 #include "moves.h"
-#include "log.h"
+#include <stdbool.h>
 
 static void drawCharacter() {
     Render_drawTextureAtCamera(Character_get()->position, 
@@ -30,12 +31,12 @@ static void render() {
     drawCharacter();
 }
 
-static MoveResult dash(uint32_t frame_max, uint32_t frame) {
-    Log(LOG_DEBUG, "FM, F: %d, %d", frame_max, frame);
+static MoveResult dash(uint32_t frame_max, uint32_t frame, MoveParameters params) {
+    Character_get()->velocity = (Vec2){1, 0};
     return (MoveResult){ .is_present = false };
 }
 
-static MoveResult movePlaceholder(uint32_t frame_max, uint32_t frame) {
+static MoveResult wait(uint32_t frame_max, uint32_t frame, MoveParameters params) {
     return (MoveResult){ .is_present = false };
 }
 
@@ -45,17 +46,16 @@ static void init() {
     Moves_register((Move){
         .name = "Dash",
         .duration = 2,
-        // TODO: function receiving interface's input, like vector, 
-        // or just a number
+        .paramsNeeded = { .vector = true },
         .function = dash,
     });
 
-    for (int i = 0; i < 2; i++)
-        Moves_register((Move){
-            .name = "PlaceholderMove",
-            .duration = 5,
-            .function = movePlaceholder,
-        });
+    Moves_register((Move){
+        .name = "Wait",
+        .duration = 1,
+        .paramsNeeded = {0}, // No params params needed
+        .function = wait,
+    });
 
     id = Layer_create(layerGamePreview());
 }

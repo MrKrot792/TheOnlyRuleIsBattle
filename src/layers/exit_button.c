@@ -15,5 +15,6 @@ Layer layerExitButton() {
         .event = EventFun_make(event),
         .render = SimpleFun_empty(),
         .update = SimpleFun_empty(),
+        .ui = SimpleFun_empty(),
     };
 }

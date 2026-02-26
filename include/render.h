@@ -16,4 +16,6 @@
 
 void Render_drawTextureAt(Vec2 position, const Texture texture);
 void Render_drawTextureAtCamera(Vec2 position, const Texture texture);
+void Render_drawTextureAtDecorated(Vec2 position, const Texture texture, int attribute);
+void Render_drawTextureAtDecoratedCamera(Vec2 position, const Texture texture, int attribute);
 void GCC_PRINTFLIKE(2, 3) Render_drawTextAt(Vec2 position, const char* text, ...);

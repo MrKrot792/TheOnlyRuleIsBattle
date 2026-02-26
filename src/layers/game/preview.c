@@ -8,9 +8,9 @@
 #include "render.h"
 #include "vec2.h"
 
-int32_t selected_move = 0;
-int32_t max_moves = 0;
-uint32_t self_id = 0;
+static int32_t selected_move = 0;
+static int32_t max_moves = 0;
+static uint32_t self_id = 0;
 
 void init(uint32_t id) {
     max_moves = Moves_count();
