@@ -15,6 +15,19 @@ void Blocks_init() {
         .texture = Texture_create(TEXTURE_EMPTY_BLOCK),
         .solid = false,
     };
+    registredBlocks[BLOCK_EMPTY1] = (Block){
+        .texture = Texture_create(TEXTURE_EMPTY_BLOCK1),
+        .solid = false,
+    };
+    registredBlocks[BLOCK_EMPTY2] = (Block){
+        .texture = Texture_create(TEXTURE_EMPTY_BLOCK2),
+        .solid = false,
+    };
+    registredBlocks[BLOCK_EMPTY3] = (Block){
+        .texture = Texture_create(TEXTURE_EMPTY_BLOCK3),
+        .solid = false,
+    };
+
     registredBlocks[BLOCK_SOLID] = (Block){
         .texture = Texture_create(TEXTURE_SOLID_BLOCK),
         .solid = true,

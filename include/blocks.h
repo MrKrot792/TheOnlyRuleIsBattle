@@ -7,6 +7,9 @@
 
 enum BlockIndices {
     BLOCK_EMPTY,
+    BLOCK_EMPTY1,
+    BLOCK_EMPTY2,
+    BLOCK_EMPTY3,
     BLOCK_SOLID,
 
     // Reserved

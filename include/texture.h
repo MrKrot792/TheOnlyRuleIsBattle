@@ -10,7 +10,12 @@
 // Two encoded bytes, each one representing a char
 typedef uint16_t Texture;
 
+// TODO: Remove this stupid fucking костыль
 #define TEXTURE_EMPTY_BLOCK  (uint8_t[2]){'_', ' '}
+#define TEXTURE_EMPTY_BLOCK1 (uint8_t[2]){'.', ' '}
+#define TEXTURE_EMPTY_BLOCK2 (uint8_t[2]){'.', '\''}
+#define TEXTURE_EMPTY_BLOCK3 (uint8_t[2]){' ', '.'}
+
 #define TEXTURE_SOLID_BLOCK  (uint8_t[2]){'[', ']'}
 #define TEXTURE_ERROR        (uint8_t[2]){'!', 'E'}
 
