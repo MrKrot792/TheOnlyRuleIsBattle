@@ -21,8 +21,8 @@ static Vec2 target = {0};
 
 static void attackUi() {
     Render_drawTextAt((Vec2){0, RENDER_REAL_HEIGHT-2}, 
-            "Index: %d, name: %s", 
-            move_index, Moves_getAt(move_index).move.name);
+            "Move name: %s, duration: %d", 
+            Moves_getAt(move_index).move.name, Moves_getAt(move_index).move.duration);
 
     if (Moves_getAt(move_index).move.paramsNeeded.vector) {
         Render_drawTextureAtDecorated(CENTERED(Vec2_zero()), Texture_create(TEXTURE_ATTACK_OVERLAY), A_ITALIC);
