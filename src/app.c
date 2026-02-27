@@ -1,14 +1,18 @@
 #include <string.h>
+#include <time.h>
 
 #include "app.h"
 #include "blocks.h"
+#include "character.h"
 #include "layer.h"
 #include "world.h"
-#include "fps.h"
 #include "log.h"
 
 #include "layers/game.h"
 #include "layers/exit_button.h"
+#include "layers/ui.h"
+
+#include "fps.h"
 
 static bool running = true;
 static int error = APP_OK;
@@ -16,6 +20,7 @@ static bool error_message_present = false;
 static char error_message[2048] = {0};
 
 static FpsInfo fps = {0};
+static FpsState fps_state = {0};
 
 static void App_ncursesInit() {
     initscr();
@@ -26,33 +31,48 @@ static void App_ncursesInit() {
 
 static void App_ncursesDeinit() { endwin(); }
 
+// TODO: Make this handle time <1sec
+static void App_sleepFor(float nanosecs) {
+    struct timespec time_to_sleep = { .tv_nsec = nanosecs * 1e9f };
+    nanosleep(&time_to_sleep, NULL);
+}
+
 void App_init() {
     Blocks_init();
     World_init(WORLD_WIDTH, WORLD_HEIGHT);
     App_ncursesInit();
     Log_init();
+    Character_init();
 
+    // TODO (potentially): Move this to something like Layers_init(). 
     Layer_create(layerExitButton());
+    Layer_create(layerUI());
     Layer_create(layerGame());
+
+    fps_state = Fps_create();
+    Fps_setFramesPerSecond(&fps_state, 60);
 }
 
 void App_deinit() {
     World_deinit();
     App_ncursesDeinit();
     Log_deinit();
+    Blocks_deinit();
 }
 
 int App_loop() {
     while (running) {
-        Fps_frameStart();
+        Fps_frameStart(&fps_state);
             Layers_events();
             Layers_update();
 
             // Not `clear()` because it causes flickering
             erase();
                 Layers_render();
+                Layers_ui();
             refresh();
-        fps = Fps_frameEnd();
+        App_sleepFor(Fps_timeToWait(&fps_state, fps));
+        fps = Fps_frameEnd(&fps_state);
     }
 
     return error;

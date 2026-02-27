@@ -23,4 +23,6 @@ static inline float Vec2_length(Vec2 a) { return sqrtf(a.x * a.x + a.y * a.y); }
 static inline Vec2 Vec2_normalize(Vec2 a) { float l = Vec2_length(a); return (Vec2){ a.x/l, a.y/l }; }
 static inline Vec2 Vec2_negate(Vec2 a) { return (Vec2){-a.x, -a.y}; }
 
+static inline Vec2 Vec2_round(Vec2 a) { return (Vec2){roundf(a.x), roundf(a.y)}; }
+
 static inline bool Vec2_isZero(Vec2 a) { return a.x == 0 && a.y == 0; }

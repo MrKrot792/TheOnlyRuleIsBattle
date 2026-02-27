@@ -7,6 +7,9 @@
 
 enum BlockIndices {
     BLOCK_EMPTY,
+    BLOCK_EMPTY1,
+    BLOCK_EMPTY2,
+    BLOCK_EMPTY3,
     BLOCK_SOLID,
 
     // Reserved
@@ -21,3 +24,5 @@ typedef struct {
 // Must call this before using any blocks
 void Blocks_init();
 Block Blocks_get(uint32_t index);
+
+void Blocks_deinit();

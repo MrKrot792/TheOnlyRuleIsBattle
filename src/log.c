@@ -1,18 +1,31 @@
-#include "log.h"
 #include <ncurses.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 
-#define LOG_DEBUG_STRING   "[DEBUG]  "
-#define LOG_INFO_STRING    "[INFO]   "
-#define LOG_WARNING_STRING "[WARNING]"
-#define LOG_ERROR_STRING   "[ERROR]  "
+#include "log.h"
 
 static FILE* logFile = NULL;
+Log_Ring lastLog = {0};
+#define EMPTY_STRING "[EMPTY  ]"
 
-void Log_init() { logFile = fopen(LOG_FILE, "a"); }
-void Log_deinit() { fclose(logFile); }
+void Log_init() { 
+    logFile = fopen(LOG_FILE, "a"); 
+    for (int i = 0; i < LOG_LOG_UI_SIZE; i++) {
+        lastLog.memory[i] = malloc(256);
+        strcpy(lastLog.memory[i], EMPTY_STRING);
+    }
+}
+void Log_deinit() { 
+    fclose(logFile); 
+    for (int i = 0; i < LOG_LOG_UI_SIZE; i++) {
+        free(lastLog.memory[i]);
+    }
+}
 
+// TODO: May be insecure? but idk
+// Because \0 are annoying
 void GCC_PRINTFLIKE(2, 3) Log(uint32_t level, const char* message, ...) {
     char prefix[10];
 
@@ -33,8 +46,25 @@ void GCC_PRINTFLIKE(2, 3) Log(uint32_t level, const char* message, ...) {
 
     va_list ap;
     va_start(ap, message);
-    fprintf(logFile, "%s ", prefix);
-    vfprintf(logFile, message, ap);
-    fprintf(logFile, "\n");
+    // Log file
+    fprintf(logFile, "%s ", prefix); // Prefix
+    vfprintf(logFile, message, ap);  // The message itself
+    fprintf(logFile, "\n");          // The \n
     va_end(ap);
+
+    // Pointer magic lmao
+    va_list aq;
+    va_start(aq, message);
+    char *buf = lastLog.memory[lastLog.tail];
+    size_t remaining = 256;
+    int written;
+    written = snprintf(buf, remaining, "%s ", prefix);
+    buf += written;
+    remaining -= written;
+    written = vsnprintf(buf, remaining, message, aq);
+    va_end(aq);
+
+    if (lastLog.tail == LOG_LOG_UI_SIZE - 1) { lastLog.tail = 0; }
+    else { lastLog.tail++; }
+    fflush(logFile);
 }

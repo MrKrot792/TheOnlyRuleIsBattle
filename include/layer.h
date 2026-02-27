@@ -2,17 +2,47 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-// TODO: Make functions optional
+typedef void (*SimpleFun_internal)();
 typedef struct {
-    void (*init)();
-    void (*deinit)();
+    bool present;
+    SimpleFun_internal function;
+} SimpleFun;
 
-    void (*update)();
-    void (*render)();
+typedef void (*InitFun_internal)(uint32_t id);
+typedef struct {
+    bool present;
+    InitFun_internal function;
+} InitFun;
+
+typedef bool (*EventFun_internal)(int ch);
+typedef struct {
+    bool present;
+    EventFun_internal function;
+} EventFun;
+
+typedef struct {
+    InitFun   init;
+    SimpleFun deinit;
+
+    SimpleFun update;
+    SimpleFun render;
+    SimpleFun ui; // called after rendering
 
     // If returns false, then the events don't go lower
-    bool (*event)(int ch);
+    EventFun event;
 } Layer;
+
+void SimpleFun_call(SimpleFun fun);
+bool EventFun_call(EventFun fun, int ch);
+void InitFun_call(InitFun fun, uint32_t id);
+
+SimpleFun SimpleFun_make(SimpleFun_internal fun);
+EventFun EventFun_make(EventFun_internal fun);
+InitFun InitFun_make(InitFun_internal fun);
+
+SimpleFun SimpleFun_empty();
+EventFun EventFun_empty();
+InitFun InitFun_empty();
 
 // For interacting with the layer stack
 
@@ -25,3 +55,4 @@ void Layer_transition(uint32_t id, Layer layer);
 void Layers_update();
 void Layers_render();
 void Layers_events();
+void Layers_ui();

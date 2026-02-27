@@ -1,27 +1,22 @@
 #include "layers/game.h"
+#include "layers/game/preview.h"
 
-#include "app.h"
-#include "render.h"
+#include "layer.h"
 #include "character.h"
+#include "log.h"
+#include "render.h"
+#include "vec2.h"
 #include "world.h"
+#include "moves.h"
 
-static void Render_drawCharacter() {
-    Render_drawTextureAtCamera(Character_getPosition(), 
+#include <stdbool.h>
+
+static void drawCharacter() {
+    Render_drawTextureAtCamera(Character_get()->position, 
             Texture_create(TEXTURE_CHARACTER));
 }
 
-static void Render_drawUI() {
-    FpsInfo fps = App_getFps();
-    Vec2 position = Character_getPosition();
-    Render_drawTextAt(Vec2_create(0, RENDER_REAL_HEIGHT - 1),
-            "HP: %d; POS: %Gx, %Gy; FPS: %d; Delta: %f;", 
-
-            Character_getHp(), 
-            position.x, position.y,
-            fps.fps, fps.delta);
-}
-
-static void Render_drawWorld() {
+static void drawWorld() {
     const Vec2 size = World_getSize();
     for (int i = 0; i < size.y; i++) {
         for (int j = 0; j < size.x; j++) {
@@ -33,38 +28,53 @@ static void Render_drawWorld() {
     }
 }
 
-static void init()        {}
-static void deinit()      {}
-static bool event(int ch) {
-    switch (ch) {
-        case 'a':
-            Character_setPosition(Vec2_add(Character_getPosition(), (Vec2){-1, 0}));
-            break;
-        case 'd':
-            Character_setPosition(Vec2_add(Character_getPosition(), (Vec2){1, 0}));
-            break;
-        case 'w':
-            Character_setPosition(Vec2_add(Character_getPosition(), (Vec2){0, -1}));
-            break;
-        case 's':
-            Character_setPosition(Vec2_add(Character_getPosition(), (Vec2){0, 1}));
-            break;
-    }
-    return false;
-}
 static void render() {
-    Render_drawWorld();
-    Render_drawCharacter();
-    Render_drawUI();
+    drawWorld();
+    drawCharacter();
 }
-static void update()      {}
+
+static MoveResult dash(uint32_t frame_max, uint32_t frame, MoveParameters params) {
+    Log(LOG_DEBUG, "Params: %fx %fy", params.vector.x, params.vector.y);
+
+    Character_get()->velocity = Vec2_scale(params.vector, MOVE_DELTA * 5.f);
+    return (MoveResult){ .is_present = false };
+}
+
+static MoveResult wait(uint32_t frame_max, uint32_t frame, MoveParameters params) {
+    return (MoveResult){ .is_present = false };
+}
+
+static uint32_t id = 0;
+// TODO: Move this to another file or something?
+static void init() {
+    Moves_register((Move){
+        .name = "Dash",
+        .duration = 30,
+        .paramsNeeded = { .vector = true },
+        .function = dash,
+    });
+
+    Moves_register((Move){
+        .name = "Wait",
+        .duration = 1,
+        .paramsNeeded = {0}, // No params params needed
+        .function = wait,
+    });
+
+    id = Layer_create(layerGamePreview());
+}
+
+static void deinit() {
+    Layer_destroy(id);
+}
 
 Layer layerGame() {
     return (Layer){
-        .init = init,
-        .deinit = deinit,
-        .event = event,
-        .render = render,
-        .update = update,
+        .init = InitFun_make(init),
+        .deinit = SimpleFun_make(deinit),
+        .event = EventFun_empty(),
+        .render = SimpleFun_make(render),
+        .update = SimpleFun_empty(),
+        .ui = SimpleFun_empty(),
     };
 }

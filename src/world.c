@@ -14,7 +14,7 @@ static Block ErrorBlock = {0};
 void World_init(uint32_t width, uint32_t height) { 
     GlobalWorld.data = malloc(sizeof(Block) * width * height);
     for (int i = 0; i < width * height; i++) {
-        GlobalWorld.data[i] = Blocks_get(BLOCK_EMPTY);
+        GlobalWorld.data[i] = Blocks_get(rand() % 3);
     }
 
     GlobalWorld.height = height;
