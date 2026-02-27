@@ -49,7 +49,7 @@ static uint32_t id = 0;
 static void init() {
     Moves_register((Move){
         .name = "Dash",
-        .duration = 30,
+        .duration = 4,
         .paramsNeeded = { .vector = true },
         .function = dash,
     });
