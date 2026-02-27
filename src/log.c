@@ -62,9 +62,6 @@ void GCC_PRINTFLIKE(2, 3) Log(uint32_t level, const char* message, ...) {
     buf += written;
     remaining -= written;
     written = vsnprintf(buf, remaining, message, aq);
-    buf += written;
-    remaining -= written;
-    snprintf(buf, remaining, "\n");
     va_end(aq);
 
     if (lastLog.tail == LOG_LOG_UI_SIZE - 1) { lastLog.tail = 0; }

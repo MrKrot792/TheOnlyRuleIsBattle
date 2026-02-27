@@ -1,6 +1,10 @@
 #pragma once
 #include <stdint.h>
+
 #include "aabb.h"
+
+#define MOVE_FRAMES 30.f // Per second
+#define MOVE_DELTA  1.f / MOVE_FRAMES
 
 // May be an attack (AABB + damage) or just nothing, then the function does
 // everything by itself

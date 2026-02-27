@@ -24,10 +24,13 @@ static void attackUi() {
             "Index: %d, name: %s", 
             move_index, Moves_getAt(move_index).move.name);
 
-    Render_drawTextureAtDecorated(CENTERED(Vec2_zero()), Texture_create(TEXTURE_ATTACK_OVERLAY), A_ITALIC);
-    Render_drawTextureAtDecorated(CENTERED(target), Texture_create(TEXTURE_ATTACK_OVERLAY), A_ITALIC);
+    if (Moves_getAt(move_index).move.paramsNeeded.vector) {
+        Render_drawTextureAtDecorated(CENTERED(Vec2_zero()), Texture_create(TEXTURE_ATTACK_OVERLAY), A_ITALIC);
+        Render_drawTextureAtDecorated(CENTERED(target), Texture_create(TEXTURE_ATTACK_OVERLAY), A_ITALIC);
+    }
 }
 
+// TODO: The actual preview of the move, maybe???
 static bool attackEvent(int ch) {
     switch (ch) {
         case 'a':
@@ -45,13 +48,12 @@ static bool attackEvent(int ch) {
 
         // Cancel the move, back to selecting one
         case 'x':
-            Log(LOG_DEBUG, "Idk bruh, here's my id: %d", self_id);
             Layer_transition(self_id, layerGamePreview());
             break;
 
         // Selecting the move, and playing it!
         case ' ':
-            Layer_transition(self_id, layerGamePlay(move_index));
+            Layer_transition(self_id, layerGamePlay(move_index, (MoveParameters){target}));
             break;
     }
     return false;

@@ -12,8 +12,6 @@
 #include "physics.h"
 #include "camera.h"
 
-#define PHYSIC_FRAMES 5.f // Per second
-
 static uint32_t self_id = 0;
 static uint32_t move_index = 0;
 
@@ -21,6 +19,8 @@ static float elapsed;
 
 static Move move_cached;
 static uint32_t frame;
+
+static MoveParameters params;
 
 static void init(uint32_t id) {
     elapsed = 0;
@@ -31,7 +31,7 @@ static void init(uint32_t id) {
 
 static void update() {
     elapsed += App_getFps().delta;
-    if (elapsed >= ( 1.f / PHYSIC_FRAMES )) {
+    if (elapsed >= ( MOVE_DELTA )) {
         elapsed = 0;
 
         if (frame >= move_cached.duration) Layer_transition(self_id, 
@@ -39,14 +39,15 @@ static void update() {
         frame++;
 
         // TODO: Replace the placeholder move parameters with real ones
-        move_cached.function(move_cached.duration, frame, (MoveParameters){0});
+        move_cached.function(move_cached.duration, frame, params);
         Physics_simulate(Character_get());
         Camera_set(Character_get()->position);
     }
 }
 
-Layer layerGamePlay(uint32_t move_index_internal) {
+Layer layerGamePlay(uint32_t move_index_internal, MoveParameters params_internal) {
     move_index = move_index_internal;
+    params = params_internal;
 
     return (Layer){
         .init = InitFun_make(init),

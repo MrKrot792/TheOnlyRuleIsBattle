@@ -1,7 +1,7 @@
 #include "physics.h"
 #include "vec2.h"
 
-#define DIV_BY 1.5f
+#define DIV_BY 1.2f
 
 void Physics_simulate(Character *c) {
     c->position = Vec2_add(c->velocity, c->position);

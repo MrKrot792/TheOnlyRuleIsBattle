@@ -3,8 +3,10 @@
 #include "log.h"
 #include "render.h"
 #include "vec2.h"
+#include <ncurses.h>
 
 static void ui() {
+    mvinch(0, 0); clrtoeol();
     Render_drawTextAt((Vec2){0, 0}, "Logs:");
     int at = lastLog.tail;
     int position = 0;

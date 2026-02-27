@@ -3,10 +3,12 @@
 
 #include "layer.h"
 #include "character.h"
+#include "log.h"
 #include "render.h"
 #include "vec2.h"
 #include "world.h"
 #include "moves.h"
+
 #include <stdbool.h>
 
 static void drawCharacter() {
@@ -32,7 +34,9 @@ static void render() {
 }
 
 static MoveResult dash(uint32_t frame_max, uint32_t frame, MoveParameters params) {
-    Character_get()->velocity = (Vec2){1, 0};
+    Log(LOG_DEBUG, "Params: %fx %fy", params.vector.x, params.vector.y);
+
+    Character_get()->velocity = Vec2_scale(params.vector, MOVE_DELTA * 5.f);
     return (MoveResult){ .is_present = false };
 }
 
@@ -45,7 +49,7 @@ static uint32_t id = 0;
 static void init() {
     Moves_register((Move){
         .name = "Dash",
-        .duration = 2,
+        .duration = 30,
         .paramsNeeded = { .vector = true },
         .function = dash,
     });
